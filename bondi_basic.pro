@@ -1,23 +1,19 @@
 
-PRO b4
+PRO b11
 
-x=fltarr(100002)
-y=fltarr(100002) 
-a=fltarr(100002)
-b=fltarr(100002)
-g=fltarr(100002)
 
-FOR i=1,2000  DO BEGIN
-	x[i] = i*(1.0)/1000
-	a[i] = 4*ALOG10(x[i]) + (4/x[i]) - 3
-	;PRINT, i, x[i], a[i]
+x=fltarr(1) 
+y=fltarr(1) 
+;B=fltarr(1)
+a=fltarr(1)
+c=fltarr(1)
+x = 1*(1.0)/1000
+B = 0.00001
+y = NEWTON(B, 'newtfunc')
+print, x, y
 
-FOR j=1,2000  DO BEGIN
-	y[j] = j*(1.0)/1000
-	b[j] = (y[j])^2 - ALOG10((y[j])^2) - a[i]
-	PRINT, j, y[j], b[j]
-ENDFOR
-;print, b
-plot, b, y
-ENDFOR
+END
+
+FUNCTION newtfunc, B
+RETURN, [B^2 - ALOG10(B^2) -4*ALOG10(0.00001) + (4/0.00001) - 3 ]
 END
