@@ -1,23 +1,25 @@
-PRO b13
+PRO b9
 
-x=fltarr(2001)
-y=fltarr(2001) 
-a=fltarr(2001)
-b=fltarr(2001)
-g=fltarr(2001)
+x=fltarr(2002) 
+y=fltarr(2002) 
 
-FOR i=0,2000  DO BEGIN
-	x[i] = i*(1.0)/1000 + 0.000001
-FOR j=0,2000  DO BEGIN
-	y[j] = j*(1.0)/1000 + 0.000001
-	a[j] = (y[j])^2 - ALOG10((y[j])^2) - 4*ALOG10(x[i]) - (4/x[i]) + 3
-	;print, i, j, a[j]
-ENDFOR
-print, i
-min = WHERE(ABS(a) EQ MIN(ABS(a)))
-;print, min
-;y[i]=min*(1.0)/1000 + 0.000001
-plot, y, a
+FOR i=1,2000  DO BEGIN
+	x[i] = i*(1.0)/1000
+	B=0.00001
+	a = 4*ALOG10(x[i]) + (4/x[i]) - 3
+	OPENW, 1, 'test.dat'
+	PRINTF, 1, a
+	CLOSE, 1
+	y[i] = NEWTON(B, 'newtfunc')
+	PRINT, x[i], a, y[i]
 ENDFOR
 plot, x, y
+END
+
+
+FUNCTION newtfunc, B
+OPENR, 1, 'test.dat' 
+READF, 1, A
+CLOSE, 1
+RETURN, [B^2 - A]
 END
