@@ -1,12 +1,12 @@
-PRO b17
+PRO b16
 
-x=fltarr(201) 
-y=fltarr(201,2) 
+x=fltarr(51) 
+y=fltarr(51) 
 
-FOR C= -3,10 DO BEGIN 
-FOR i=0,200 DO BEGIN
-	x[i] = i*(1.0)/1000 + 0.1 
-	B=[0.1, 2]
+FOR C= -5,1, 0.5 DO BEGIN 
+FOR i=0,50 DO BEGIN
+	x[i] = i*(1.0)/100 + .01 
+	B=2
 	a = 4*ALOG10(x[i]) + (4/x[i]) + C
 	;PRINT, a
 	OPENW, 1, 'test.dat'
