@@ -1,22 +1,28 @@
-PRO b15
-b=fltarr(201)
-result=fltarr(3)
-FOR I=0,200  DO BEGIN
-	OPENW, 1, 'test.dat'
-	X = 1
-	b[I] = I*0.1
-	;PRINT, b[I]
-	PRINTF, 1, b[I]
-	CLOSE, 1
-	result = NEWTON(X, 'newtfunc')
-	print, I, result
-ENDFOR
+PRO b14
 
+x=fltarr(1001) 
+y=fltarr(1001) 
+
+FOR j=1000,2000 DO BEGIN
+	i=j-1000
+	x[i] = j*(1.0)/1000
+	B=10
+	a = 4*ALOG10(x[i]) + (4/x[i]) - 3
+	;PRINT, a
+	OPENW, 1, 'test.dat'
+	PRINTF, 1, a
+	CLOSE, 1
+	
+	y[i] = ABS(NEWTON(B, 'newtfunc'))
+	PRINT, i, x[i], a, y[i]
+ENDFOR
+plot, x, y
 END
 
-FUNCTION newtfunc, X
-OPENR, 5, 'test.dat'
-READF, 5, A
-CLOSE, 5
-RETURN, [X^2 -ALOG10(X^2) - A]
+
+FUNCTION newtfunc, B
+OPENR, 1, 'test.dat' 
+READF, 1, A
+CLOSE, 1
+RETURN, [B^2 -ALOG10(B^2) - A]
 END
