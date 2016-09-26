@@ -1,21 +1,24 @@
-PRO bondi1
+PRO bondi9
 
-x=fltarr(2001) 
-y=fltarr(2001) 
+x=fltarr(4001) 
+y=fltarr(4001) 
 
-FOR i=0,2000 DO BEGIN
+plot, x, y, xrange=[0, 4.0], yrange=[0, 4.0]
+FOR C = -1, 10 DO BEGIN
+FOR i=0,4000 DO BEGIN
 	x[i] = i*(1.0)/1000 
-	B=2
+	B=.01
 	
-	a = 4*ALOG10(x[i]) + (4/x[i]) - 2.9
+	a = 4*ALOG10(x[i]) + (4/x[i]) - C
 	;PRINT, a
 	OPENW, 1, 'test.dat'
 	PRINTF, 1, a
 	CLOSE, 1
 	y[i] = NEWTON(B, 'newtfunc', /DOUBLE )
-	PRINT, i, x[i], a, y[i]
+	;PRINT, i, x[i], a, y[i]
 ENDFOR
-plot, x, y, xrange=[0, 2.0], yrange=[0, 4.0], 
+oplot, x, y, MAX_VALUE = 0.65
+ENDFOR
 END
 
 
