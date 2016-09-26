@@ -1,13 +1,15 @@
-PRO bondi9
+PRO bondi8
 
+SET_PLOT, 'ps'
+DEVICE, Filename='new_plot.ps'
 x=fltarr(4001) 
 y=fltarr(4001) 
 
 plot, x, y, xrange=[0, 4.0], yrange=[0, 4.0]
-FOR C = -1, 10 DO BEGIN
+FOR C = -10, 10 DO BEGIN
 FOR i=0,4000 DO BEGIN
 	x[i] = i*(1.0)/1000 
-	B=.01
+	B=2
 	
 	a = 4*ALOG10(x[i]) + (4/x[i]) - C
 	;PRINT, a
@@ -17,8 +19,9 @@ FOR i=0,4000 DO BEGIN
 	y[i] = NEWTON(B, 'newtfunc', /DOUBLE )
 	;PRINT, i, x[i], a, y[i]
 ENDFOR
-oplot, x, y, MAX_VALUE = 0.65
+oplot, x, y, MIN_VALUE = 0.6595
 ENDFOR
+DEVICE, /Close_File
 END
 
 
