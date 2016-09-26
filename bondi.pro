@@ -1,13 +1,13 @@
-PRO bondi3
+PRO bondi4
 
 x=fltarr(3001) 
 y=fltarr(3001) 
 
 plot, x, y, xrange=[0, 2.0], yrange=[0, 4.0] 
-FOR C = -2.3, -1, 0.1 DO BEGIN
+FOR C = -2.3, 2, 0.1 DO BEGIN
 FOR i=0,3000 DO BEGIN
-	x[i] = i*(1.0)/1000 + .01
-	B=0.01
+	x[i] = i*(1.0)/1000 
+	B=2
 	
 	a = 4*ALOG10(x[i]) + (4/x[i]) + C
 	;PRINT, a
