@@ -1,29 +1,30 @@
-PRO bondi22
+PRO bondi20
 
 SET_PLOT, 'PS'
-DEVICE, Filename='bondi22.ps'
+DEVICE, Filename='bondi9.ps'
 x=fltarr(4001) 
 y=fltarr(4001) 
-;
-;plot, /polar, x, y
-;XYOutS, 1, 1, '. Critical Point', Size=1.0
-;
-;FOR i=0,1000 DO BEGIN
-;	x[i] = i*(1.0)/1000 
-;	B=2
-;	a = 4*ALOG(x[i]) + (4/x[i]) - 3
-;	OPENW, 1, 'test.dat'
-;	PRINTF, 1, a
-;	CLOSE, 1
-;	y[i] = NEWTON(B, 'newtfunc', /DOUBLE )
-;	
-;ENDFOR
-;oplot, /ploar, x, y
-FOR i=1000,4000 DO BEGIN
+
+plot, x, y, xrange=[0, 4.0], yrange=[0, 4.0], xtitle='r/r_c', ytitle='v/v_c'
+XYOutS, 1, 1, '. Critical Point', Size=1.0
+FOR C = -15, 15 DO BEGIN
+FOR i=0,4000 DO BEGIN
+	x[i] = i*(1.0)/1000 
+	B=2
+	a = 4*ALOG(x[i]) + (4/x[i]) + C
+	OPENW, 1, 'test.dat'
+	PRINTF, 1, a
+	CLOSE, 1
+	y[i] = NEWTON(B, 'newtfunc', /DOUBLE )
+	
+ENDFOR
+oplot, x, y, MIN_VALUE = 1.000001
+
+FOR i=0,4000 DO BEGIN
 	x[i] = i*(1.0)/1000 
 	B=.01
 	
-	a = 4*ALOG(x[i]) + (4/x[i]) - 3
+	a = 4*ALOG(x[i]) + (4/x[i]) + C
 	
 	OPENW, 1, 'test.dat'
 	PRINTF, 1, a
@@ -31,7 +32,9 @@ FOR i=1000,4000 DO BEGIN
 	y[i] = NEWTON(B, 'newtfunc', /DOUBLE )
 	
 ENDFOR
-plot, /polar, x, y
+oplot, x, y, MAX_VALUE = 0.999999
+ENDFOR
+
 DEVICE, /CLOSE_FILE
 END
 
