@@ -1,24 +1,20 @@
-PRO bvis9
+PRO bvis2
 
 
-SET_PLOT, 'PS'
-DEVICE, Filename='bvis91.ps', /COLOR, BITS=8
+;SET_PLOT, 'PS'
+;DEVICE, Filename='bvis1.ps'
 
-
-U=fltarr(2501,2501)
-V=fltarr(2501,2501)
-Z=fltarr(2501,2501)
-S=fltarr(2501,2501)
 x=fltarr(4001) 
-y=fltarr(4001) 
-;z=intarr(3601)
+y=fltarr(4001)
+r=fltarr(3601)
+z=fltarr(4001, 3601)
 
 ;plot, x, y, xrange=[0, 4.0], yrange=[0, 2.0], xtitle='r/r_c', ytitle='v/c_s'
 ;XYOutS, 1, 1, 'Critical Point', Size=1.0
 FOR i=0,1000 DO BEGIN
 	x[i] = i*(1.0)/1000 
 	B=2
-	a = 4*ALOG(x[i]) + (4/x[i]) - 3
+	a = 4*ALOG(x[i]) + (4/x[i]) - 4
 	OPENW, 1, 'test.dat'
 	PRINTF, 1, a
 	CLOSE, 1
@@ -30,7 +26,7 @@ FOR i=1000,4000 DO BEGIN
 	x[i] = i*(1.0)/1000 
 	B=.01
 	
-	a = 4*ALOG(x[i]) + (4/x[i]) - 3
+	a = 4*ALOG(x[i]) + (4/x[i]) - 4
 	
 	OPENW, 1, 'test.dat'
 	PRINTF, 1, a
@@ -39,38 +35,26 @@ FOR i=1000,4000 DO BEGIN
 	
 ENDFOR
 
-
-FOR i= 0,2500 DO BEGIN
-FOR j= 0,2500 DO BEGIN
-p=(i-1250)/10
-q=(j-1250)/10
-r=(p^2+q^2)^(0.5)
-
-
-IF r LE 40 OR r EQ 100 THEN BEGIN
-Z[i, j] = 0
-ENDIF ELSE BEGIN
-intr= Long(r)
-theta=ATAN(p/q)
-U[i, j] = y[intr] * COS(theta) 
-V[i, j] = -y[intr] * SIN(theta) 
-Z[i, j] =((U[i, j])^2 + (V[i, j])^2 )^(0.5)
-ENDELSE
+FOR a=0, 4000 DO BEGIN
+FOR theta=0, 3600 DO BEGIN
+z[a,theta]= y[a]
 ENDFOR
 ENDFOR
 
-;DEVICE, DECOMPOSED = 0
+;FOR theta=0, 3600 DO BEGIN
+;r[theta]= theta
+;ENDFOR
 
-LOADCT, -19
-TVSCL, Z;, TOP = 200
 
-;LOADCT, 0
-;TVSCL, S, 0
 
-;VELOVECT, U, V, /OVERPLOT
-DEVICE, /CLOSE_FILE
+DEVICE, DECOMPOSED = 0
+
+LOADCT, 2
+TVscl, z, 0
+;DEVICE, /CLOSE_FILE
 
 END
+
 
 FUNCTION newtfunc, B
 OPENR, 1, 'test.dat' 
@@ -80,3 +64,4 @@ RETURN, [B^2 - ALOG(B^2) - A]
 END
 
 
+We had
