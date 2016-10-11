@@ -1,21 +1,21 @@
-PRO bondi26
+PRO bondi28
 
-SET_PLOT, 'PS'
-DEVICE, Filename='bondi26.ps'
+;SET_PLOT, 'PS'
+;DEVICE, Filename='bondi28.ps'
 x=fltarr(4001) 
 y=fltarr(4001) 
 
 plot, x, y, xrange=[0, 4.0], yrange=[0, 4.0], xtitle='r/r_c', ytitle='v/v_c'
-XYOutS, 1, 1, '. Critical Point', Size=1.0
-FOR C = -15, 15, 0.5 DO BEGIN
+;XYOutS, 1, 1, '. Critical Point', Size=1.0
+;FOR C = -15, 15, 0.5 DO BEGIN
 FOR i=0,4000 DO BEGIN
 	x[i] = i*(1.0)/1000 
 	B=2
-	a = 4*ALOG(x[i]) + (4/x[i]) + C
+	a = 4*ALOG(x[i]) + (4/x[i]) - 15
 	OPENW, 1, 'test.dat'
 	PRINTF, 1, a
 	CLOSE, 1
-	y[i] = NEWTON(B, 'newtfunc', /DOUBLE )
+	y[i] = NEWTON(B, 'newtfunc', /DOUBLE)
 	
 ENDFOR
 oplot, x, y, MIN_VALUE = 1.0001
@@ -24,18 +24,18 @@ FOR i=0,4000 DO BEGIN
 	x[i] = i*(1.0)/1000 
 	B=.01
 	
-	a = 4*ALOG(x[i]) + (4/x[i]) + C
+	a = 4*ALOG(x[i]) + (4/x[i]) - 15
 	
 	OPENW, 1, 'test.dat'
 	PRINTF, 1, a
 	CLOSE, 1
-	y[i] = NEWTON(B, 'newtfunc', /DOUBLE )
+	y[i] = NEWTON(B, 'newtfunc', /DOUBLE)
 	
 ENDFOR
 oplot, x, y, MAX_VALUE = 0.9999
-ENDFOR
+;ENDFOR
 
-DEVICE, /CLOSE_FILE
+;DEVICE, /CLOSE_FILE
 END
 
 
