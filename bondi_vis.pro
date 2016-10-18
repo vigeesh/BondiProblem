@@ -1,8 +1,8 @@
-PRO bvis91
+PRO bvis92
 
 
 SET_PLOT, 'PS'
-DEVICE, Filename='bondivis.ps', /COLOR, BITS=8
+DEVICE, Filename='bondivis1.ps', /COLOR, BITS=8
 
 
 U=fltarr(2501,2501)
@@ -48,19 +48,16 @@ IF r LE 33 THEN BEGIN
 Z[i, j] = 0
 ENDIF ELSE BEGIN
 
-
-IF r LE 100 THEN BEGIN
-U[i, j] = y[intr] * COS(theta) 
-V[i, j] = -y[intr] * SIN(theta) 
-Z[i, j] =1/(1.05*(((U[i, j])^2 + (V[i, j])^2 )^(0.5))) 
-ENDIF ELSE BEGIN
-
 intr= Long(r)
 theta=ATAN(p/q)
 U[i, j] = y[intr] * COS(theta) 
 V[i, j] = -y[intr] * SIN(theta) 
 Z[i, j] =1/(((U[i, j])^2 + (V[i, j])^2 )^(0.5))
-ENDELSE
+
+IF r GE 99 AND r LE 100 THEN BEGIN
+Z[i, j] = 0
+ENDIF 
+
 
 ENDELSE
 
@@ -69,7 +66,7 @@ ENDFOR
 ENDFOR
 
 ;DEVICE, DECOMPOSED = 0
-LOADCT, 3
+LOADCT, 0
 TVSCL, SMOOTH(Z,3), 0
 XYOutS, 5500, 6000, 'STAR', charsize= 2.0, charthick= 4.0, COLOR =  255, /DEVICE
 XYOutS, 5100, 11450, 'Sound Horizon', charsize=1.0, COLOR = 0, /DEVICE
