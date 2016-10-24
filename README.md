@@ -2,6 +2,7 @@
 
 Spherically symmetrical adiabatic gas flows in the gravitational field of a star as obtained by Bondi (1952).
 
+![Bondi](bondi.png?raw=true "Bondi Accretion")
 
 ### References
 
