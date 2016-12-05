@@ -1,8 +1,8 @@
-PRO bvis92
+PRO bvis9
 
 
 SET_PLOT, 'PS'
-DEVICE, Filename='bondivis1.ps', /COLOR, BITS=8
+DEVICE, Filename='bvis91.ps', /COLOR, BITS=8
 
 
 U=fltarr(2501,2501)
@@ -11,8 +11,10 @@ Z=fltarr(2501,2501)
 S=fltarr(2501,2501)
 x=fltarr(4001) 
 y=fltarr(4001) 
+;z=intarr(3601)
 
-
+;plot, x, y, xrange=[0, 4.0], yrange=[0, 2.0], xtitle='r/r_c', ytitle='v/c_s'
+;XYOutS, 1, 1, 'Critical Point', Size=1.0
 FOR i=0,1000 DO BEGIN
 	x[i] = i*(1.0)/1000 
 	B=2
@@ -44,33 +46,28 @@ p=(i-1250)/10
 q=(j-1250)/10
 r=(p^2+q^2)^(0.5)
 
-IF r LE 33 THEN BEGIN
+
+IF r LE 40 OR r EQ 100 THEN BEGIN
 Z[i, j] = 0
 ENDIF ELSE BEGIN
-
 intr= Long(r)
 theta=ATAN(p/q)
 U[i, j] = y[intr] * COS(theta) 
 V[i, j] = -y[intr] * SIN(theta) 
-Z[i, j] =1/(((U[i, j])^2 + (V[i, j])^2 )^(0.5))
-
-IF r GE 99 AND r LE 100 THEN BEGIN
-Z[i, j] = 0
-ENDIF 
-
-
+Z[i, j] =((U[i, j])^2 + (V[i, j])^2 )^(0.5)
 ENDELSE
-
 ENDFOR
-
 ENDFOR
 
 ;DEVICE, DECOMPOSED = 0
-LOADCT, 0
-TVSCL, SMOOTH(Z,3), 0
-XYOutS, 5500, 6000, 'STAR', charsize= 2.0, charthick= 4.0, COLOR =  255, /DEVICE
-XYOutS, 5100, 11450, 'Sound Horizon', charsize=1.0, COLOR = 0, /DEVICE
 
+LOADCT, -19
+TVSCL, Z;, TOP = 200
+
+;LOADCT, 0
+;TVSCL, S, 0
+
+;VELOVECT, U, V, /OVERPLOT
 DEVICE, /CLOSE_FILE
 
 END
